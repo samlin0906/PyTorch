@@ -1,0 +1,51 @@
+#Curve Fitting 曲線擬合
+#Single-input Single-output，簡稱SISO 單輸入、單輸出
+#Regression Analysis 迴歸分析
+
+import torch
+import torch.nn.functional as F
+import matplotlib.pyplot as plt
+
+input = torch.linspace(-1, 1, 100)                                              #線性間距向量, 一維且均勻分布
+x = torch.unsqueeze(input, dim=1)                                               #擴充維度, shape=(100, 1)
+y = x.pow(2) + 0.2 * torch.rand(x.size())                                       #增加雜訊; torch.rand()均勻分布   
+
+# plt.scatter(x.data.numpy(), y.data.numpy())
+# plt.show()
+
+class Net(torch.nn.Module):
+    def __init__(self, n_feature, n_hidden, n_output):
+        super(Net, self).__init__()
+        self.hidden = torch.nn.Linear(n_feature, n_hidden)                     #hidden layer
+        self.predict = torch.nn.Linear(n_hidden, n_output)                     #output layer
+
+    def forward(self, x):
+        x = F.relu(self.hidden(x))                                             #激勵函數 for hidden layer
+        x = self.predict(x)                                                    #線性輸出
+        return x
+        
+net = Net(n_feature=1, n_hidden=10, n_output=1)
+
+optimizer = torch.optim.SGD(net.parameters(), lr=0.2)                          #隨機梯度下降 
+loss_func = torch.nn.MSELoss()                                                 #損失函數
+
+plt.ion()                                                                      #啟用交互模式
+
+for t in range(200):
+    prediction = net(x)                                                        #輸入 x 並根據 x 進行預測
+    loss = loss_func(prediction, y)                                            # (output, target)
+
+    optimizer.zero_grad()                                                      #將所有參數的梯度緩衝區（buffer）歸零
+    loss.backward()                                                            #反向傳播
+    optimizer.step()                                                           #更新權重
+
+    if t % 5 == 0:
+        plt.cla()                                                              #清除坐標軸
+        plt.scatter(x.data.numpy(), y.data.numpy())                            #散點圖
+        plt.plot(x.data.numpy(), prediction.data.numpy(), 'r-', lw=5)          #標記x, y
+        plt.text(0.5, 0, 'Loss=%.4f' % loss.data.numpy(), fontdict={'size': 20, 'color':  'red'})
+        plt.pause(0.1)
+        
+plt.ioff()
+plt.show()        
+
