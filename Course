@@ -3,8 +3,8 @@
 #Regression Analysis 迴歸分析
 
 import torch
-import torch.nn.functional as F
-import matplotlib.pyplot as plt
+import torch.nn.functional as F                                                 #激勵函數
+import matplotlib.pyplot as plt                        
 
 input = torch.linspace(-1, 1, 100)                                              #線性間距向量, 一維且均勻分布
 x = torch.unsqueeze(input, dim=1)                                               #擴充維度, shape=(100, 1)
@@ -27,13 +27,13 @@ class Net(torch.nn.Module):
 net = Net(n_feature=1, n_hidden=10, n_output=1)
 
 optimizer = torch.optim.SGD(net.parameters(), lr=0.2)                          #隨機梯度下降 
-loss_func = torch.nn.MSELoss()                                                 #損失函數
+loss_func = torch.nn.MSELoss()                                                 #損失函數, 預測值和真實值的公式（均方差）
 
 plt.ion()                                                                      #啟用交互模式
 
 for t in range(200):
     prediction = net(x)                                                        #輸入 x 並根據 x 進行預測
-    loss = loss_func(prediction, y)                                            # (output, target)
+    loss = loss_func(prediction, y)                                            # (output, target), 計算二者誤差
 
     optimizer.zero_grad()                                                      #將所有參數的梯度緩衝區（buffer）歸零
     loss.backward()                                                            #反向傳播
