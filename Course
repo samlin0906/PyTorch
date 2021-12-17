@@ -7,7 +7,8 @@ import torch.nn.functional as F                                                 
 import matplotlib.pyplot as plt                        
 
 input = torch.linspace(-1, 1, 100)                                              #線性間距向量, 一維且均勻分布
-x = torch.unsqueeze(input, dim=1)                                               #擴充維度, shape=(100, 1)
+x = torch.unsqueeze(input, dim=1)                                               #擴充維度
+#print(x.shape)                                                                 #shape=(100, 1)
 y = x.pow(2) + 0.2 * torch.rand(x.size())                                       #增加雜訊; torch.rand()均勻分布   
 
 # plt.scatter(x.data.numpy(), y.data.numpy())
