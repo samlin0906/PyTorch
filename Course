@@ -1,6 +1,7 @@
+#Regression model 回歸模型
 #Curve Fitting 曲線擬合
 #Single-input Single-output，簡稱SISO 單輸入、單輸出
-#Regression Analysis 迴歸分析
+
 
 import torch
 import torch.nn.functional as F                                                 #激勵函數
