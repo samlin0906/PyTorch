@@ -1,6 +1,7 @@
 #Regression model 回歸模型
 #Curve Fitting 曲線擬合
 #Single-input Single-output，簡稱SISO 單輸入、單輸出
+#4種優化器
 
 
 import torch
