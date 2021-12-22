@@ -1,3 +1,6 @@
+#MNIST手寫數字識別
+
+
 import os
 import torch
 import torch.nn as nn
