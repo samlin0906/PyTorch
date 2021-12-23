@@ -1,5 +1,6 @@
 #MNIST手寫數字識別
 #分類
+#新增time_step(seq)及input_size(feature)
 
 
 import torch
